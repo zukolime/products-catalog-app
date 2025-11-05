@@ -1,18 +1,22 @@
+import type { Product } from '../../models/product';
+
 import { CardWrapper, CardLink, CardImageBox, CardImage, CardTitle, CardDescription } from './CardItem.styled';
 
-export const CardItem = () => {
+interface CardItemProps {
+  product: Product;
+}
+
+export const CardItem = ({ product }: CardItemProps) => {
   return (
     <CardWrapper>
-      <CardLink to='/'>
+      <CardLink to={`/product/${product.id}`}>
         <CardImageBox>
-          <CardImage src='https://placedog.net/500/g' />
+          <CardImage src={product.thumbnail} />
         </CardImageBox>
-        <CardTitle>Lorem ipsum</CardTitle>
-        <CardDescription>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa explicabo earum fugit vel similique delectus exercitationem quibusdam quidem
-          praesentium reiciendis ullam non quos ipsa, officiis provident saepe commodi a eaque.
-        </CardDescription>
+        <CardTitle>{product.title}</CardTitle>
+        <CardDescription>{product.description}</CardDescription>
       </CardLink>
+      {/* <button onClick={handleToggleLike}>{product.liked ? '❤️ UNLIKE' : '🤍 LIKE'}</button> */}
     </CardWrapper>
   );
 };
