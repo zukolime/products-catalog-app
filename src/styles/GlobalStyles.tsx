@@ -5,7 +5,8 @@ export const GlobalStyle = createGlobalStyle`
   ${normalize}
 
   * {
-    box-sizing: border-box;
+    box-sizing: border-box;    
+    padding: 0;
   }
 
   body {
@@ -18,17 +19,22 @@ export const GlobalStyle = createGlobalStyle`
   a {
     color: inherit;
     text-decoration: none;
+    transition: opacity 0.3s;
 
     &:hover {
       opacity: 0.7;
     }
   }
+
+  img {
+    display: block;
+    width: 100%;
+  }
 `;
 
 export const MainContainer = styled.div`
   width: 70%;
-  margin: 0 auto;
-  padding: 15px;
+  margin: 15px auto;
 
   @media (max-width: 660px) {
     width: 90%;
