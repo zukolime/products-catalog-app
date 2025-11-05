@@ -1,3 +1,5 @@
+import { CardList } from '../../components/CardList/CardList';
+
 export const ProductsPage = () => {
-  return <h1>ProductsPage</h1>;
+  return <CardList />;
 };
