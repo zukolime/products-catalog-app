@@ -23,7 +23,6 @@ export const HeaderNavLink = styled(NavLink)`
   font-size: 18px;
   font-weight: 500;
   position: relative;
-  transition: 0.3s;
 
   &.active {
     color: #ff5572;
