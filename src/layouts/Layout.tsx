@@ -5,11 +5,9 @@ import { MainContainer } from '../styles/GlobalStyles';
 
 export const Layout = () => {
   return (
-    <>
-      <MainContainer>
-        <Header />
-        <Outlet />
-      </MainContainer>
-    </>
+    <MainContainer>
+      <Header />
+      <Outlet />
+    </MainContainer>
   );
 };

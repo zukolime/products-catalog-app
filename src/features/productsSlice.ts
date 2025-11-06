@@ -1,38 +1,62 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Product } from '../models/product';
+import { getHttp } from '../helpers/getHttp';
 
 interface ProductsState {
-  items: Product[];
+  products: Product[];
   filter: 'all' | 'liked';
+  loading: boolean;
+  error: string | null;
 }
 
 const initialState: ProductsState = {
-  items: [],
+  products: [],
   filter: 'all',
+  loading: false,
+  error: null,
 };
+
+export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
+  const { request } = getHttp();
+  const data = await request('https://dummyjson.com/products?limit=6');
+  return data.products;
+});
 
 const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    setProducts(state, action: PayloadAction<Product[]>) {
-      state.items = action.payload;
-    },
-    toggleLike(state, action: PayloadAction<number>) {
-      const product = state.items.find((item) => item.id === action.payload);
+    toggleLike(state, action: PayloadAction<string>) {
+      const product = state.products.find((item) => item.id === action.payload);
       if (product) product.liked = !product.liked;
     },
-    removeProduct(state, action: PayloadAction<number>) {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+    removeProduct(state, action: PayloadAction<string>) {
+      state.products = state.products.filter((item) => item.id !== action.payload);
     },
     addProduct(state, action: PayloadAction<Product>) {
-      state.items.push(action.payload);
+      state.products.push(action.payload);
     },
     setFilter(state, action: PayloadAction<'all' | 'liked'>) {
       state.filter = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Error fetching';
+      })
+      .addDefaultCase(() => {});
+  },
 });
 
-export const { setProducts, toggleLike, removeProduct, addProduct, setFilter } = productsSlice.actions;
+export const { toggleLike, removeProduct, addProduct, setFilter } = productsSlice.actions;
 export default productsSlice.reducer;

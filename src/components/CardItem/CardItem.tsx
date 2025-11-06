@@ -9,9 +9,12 @@ interface CardItemProps {
 export const CardItem = ({ product }: CardItemProps) => {
   return (
     <CardWrapper>
-      <CardLink to={`/product/${product.id}`}>
+      <CardLink to={`/products/${product.id}`}>
         <CardImageBox>
-          <CardImage src={product.thumbnail} />
+          <CardImage
+            src={product.thumbnail}
+            alt={product.title}
+          />
         </CardImageBox>
         <CardTitle>{product.title}</CardTitle>
         <CardDescription>{product.description}</CardDescription>

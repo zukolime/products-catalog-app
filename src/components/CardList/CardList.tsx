@@ -1,25 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { CardItem } from '../CardItem/CardItem';
 import { CardListWrapper } from './CardList.styled';
-import { fetchData } from '../../app/api/api';
-import { setProducts } from '../../features/productsSlice';
+import { fetchProducts } from '../../features/productsSlice';
 import { useEffect } from 'react';
+
 import type { Product } from '../../models/product';
-import type { RootState } from '../../app/providers/with-store';
+import type { AppDispatch, RootState } from '../../app/providers/with-store';
 
 export const CardList = () => {
-  const dispatch = useDispatch();
-  const products = useSelector((state: RootState) => state.products.items);
+  const dispatch = useDispatch<AppDispatch>();
+  const products = useSelector((state: RootState) => state.products.products);
+  const loading = useSelector((state: RootState) => state.products.loading);
+  const error = useSelector((state: RootState) => state.products.error);
 
   useEffect(() => {
-    if (products.length === 0) {
-      const loadProducts = async () => {
-        const data = await fetchData();
-        dispatch(setProducts(data));
-      };
-      loadProducts();
-    }
-  }, [dispatch, products.length]);
+    dispatch(fetchProducts());
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <CardListWrapper>
