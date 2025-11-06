@@ -82,7 +82,7 @@ export const CreateProductPage = () => {
               <TextField
                 fullWidth
                 label='Image URL'
-                name='imageURL'
+                name='thumbnail'
                 value={values.thumbnail}
                 onChange={handleChange}
                 error={touched.thumbnail && Boolean(errors.thumbnail)}
