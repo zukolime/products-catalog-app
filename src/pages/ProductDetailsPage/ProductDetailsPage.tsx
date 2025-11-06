@@ -18,20 +18,23 @@ import {
 export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
-  const { product } = useSelector((state: RootState) => state.product);
+  const { product, loading } = useSelector((state: RootState) => state.product);
 
   useEffect(() => {
     if (id) {
       dispatch(fetchProductById(id));
     }
-  }, [id, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading) return <p>Loading</p>;
 
   return (
     <>
       <ProductWrapper>
         <ProductImageBox>
           <ProductImage
-            src={product.thumbnail}
+            src={product.thumbnail || undefined}
             alt={product.title}
           />
         </ProductImageBox>
