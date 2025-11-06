@@ -1,12 +1,27 @@
 import type { Product } from '../../models/product';
+import { removeProduct, toggleLike } from '../../features/productsSlice';
 
-import { CardWrapper, CardLink, CardImageBox, CardImage, CardTitle, CardDescription } from './CardItem.styled';
+import { CardWrapper, CardLink, CardImageBox, CardImage, CardTitle, CardDescription, CardControls, CardControl } from './CardItem.styled';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../app/providers/with-store';
 
 interface CardItemProps {
   product: Product;
 }
 
 export const CardItem = ({ product }: CardItemProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleToggleLike = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(toggleLike(product.id));
+  };
+
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(removeProduct(product.id));
+  };
+
   return (
     <CardWrapper>
       <CardLink to={`/products/${product.id}`}>
@@ -17,9 +32,12 @@ export const CardItem = ({ product }: CardItemProps) => {
           />
         </CardImageBox>
         <CardTitle>{product.title}</CardTitle>
-        <CardDescription>{product.description}</CardDescription>
+        <CardDescription>{`${product.description.slice(0, 120)}...`}</CardDescription>
       </CardLink>
-      {/* <button onClick={handleToggleLike}>{product.liked ? '❤️ UNLIKE' : '🤍 LIKE'}</button> */}
+      <CardControls>
+        <CardControl onClick={handleToggleLike}>{product.liked ? '❤️ UNLIKE' : '🤍 LIKE'}</CardControl>
+        <CardControl onClick={handleRemove}>🗑️ DELETE</CardControl>
+      </CardControls>
     </CardWrapper>
   );
 };
