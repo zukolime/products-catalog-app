@@ -1,12 +1,21 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Product } from '../models/product';
 import { getHttp } from '../helpers/getHttp';
+import { v4 as uuid } from 'uuid';
 
 interface ProductsState {
   products: Product[];
   filter: 'all' | 'liked';
   loading: boolean;
   error: string | null;
+}
+
+interface NewProductPayload {
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: number;
+  brand: string;
 }
 
 const initialState: ProductsState = {
@@ -33,8 +42,18 @@ const productsSlice = createSlice({
     removeProduct(state, action: PayloadAction<string>) {
       state.products = state.products.filter((item) => item.id !== action.payload);
     },
-    addProduct(state, action: PayloadAction<Product>) {
-      state.products.push(action.payload);
+    addProduct(state, action: PayloadAction<NewProductPayload>) {
+      const newProduct: Product = {
+        id: uuid(),
+        title: action.payload.title,
+        description: action.payload.description,
+        thumbnail: action.payload.thumbnail,
+        price: action.payload.price,
+        brand: action.payload.brand,
+        liked: false,
+      };
+
+      state.products = [...state.products, newProduct];
     },
     setFilter(state, action: PayloadAction<'all' | 'liked'>) {
       state.filter = action.payload;
