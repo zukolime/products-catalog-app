@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.header`
@@ -11,7 +11,10 @@ export const HeaderWrapper = styled.header`
   border-radius: 12px;
 `;
 
-export const HeaderTitle = styled.h1``;
+export const HeaderTitle = styled(Link)`
+  font-size: 32px;
+  font-weight: 600;
+`;
 
 export const HeaderLinkWrapper = styled.nav`
   display: flex;

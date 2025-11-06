@@ -4,6 +4,16 @@ import type { AppDispatch, RootState } from '../../app/providers/with-store';
 
 import { useEffect } from 'react';
 import { fetchProductById } from '../../features/productSlice';
+import {
+  ProductWrapper,
+  ProductImageBox,
+  ProductImage,
+  ProductTitle,
+  ProductDescription,
+  ProductAddInfo,
+  ProductAddInfoBox,
+  ProductLinkBack,
+} from './ProductDetailsPage.styled';
 
 export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,15 +27,22 @@ export const ProductDetailsPage = () => {
   }, [id, dispatch]);
 
   return (
-    <div>
-      <div>
-        <img
-          src={product.thumbnail}
-          alt={product.title}
-        />
-      </div>
-      <h2>{product.title}</h2>
-      <p>{product.description}</p>
-    </div>
+    <>
+      <ProductWrapper>
+        <ProductImageBox>
+          <ProductImage
+            src={product.thumbnail}
+            alt={product.title}
+          />
+        </ProductImageBox>
+        <ProductTitle>{product.title}</ProductTitle>
+        <ProductDescription>{product.description}</ProductDescription>
+        <ProductAddInfoBox>
+          <ProductAddInfo>$ {product.price}</ProductAddInfo>
+          <ProductAddInfo>Brand: {product.brand}</ProductAddInfo>
+        </ProductAddInfoBox>
+      </ProductWrapper>
+      <ProductLinkBack to='/products'> ← Back </ProductLinkBack>
+    </>
   );
 };
