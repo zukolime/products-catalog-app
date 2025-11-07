@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 
+import { validationSchema } from '../../helpers/validation';
 import { addProduct } from '../../features/productsSlice';
 import type { AppDispatch } from '../../app/providers/with-store';
 import {
@@ -18,14 +17,6 @@ import {
   FormField,
   FormContainer,
 } from './CreateProductPage.styled';
-
-const validationSchema = Yup.object({
-  title: Yup.string().required('Title is required').min(3, 'Minimum 3 characters'),
-  description: Yup.string().required('Description is required').min(10, 'Minimum 10 characters'),
-  thumbnail: Yup.string().url('Enter a valid URL').required('Image URL is required'),
-  price: Yup.number().positive('Price shall be positive number').required('Price is required'),
-  brand: Yup.string().required('Brand name is required').min(1, 'Minimum 1 character'),
-});
 
 const initialValues = {
   title: '',
