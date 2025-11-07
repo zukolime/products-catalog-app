@@ -1,131 +1,147 @@
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
 import { addProduct } from '../../features/productsSlice';
 import type { AppDispatch } from '../../app/providers/with-store';
+import {
+  FormWrapper,
+  FormTitle,
+  FormFieldBox,
+  FormLabel,
+  FormButton,
+  FormErrorMessage,
+  FormSuccessMessage,
+  FormField,
+  FormContainer,
+} from './CreateProductPage.styled';
+
+const validationSchema = Yup.object({
+  title: Yup.string().required('Title is required').min(3, 'Minimum 3 characters'),
+  description: Yup.string().required('Description is required').min(10, 'Minimum 10 characters'),
+  thumbnail: Yup.string().url('Enter a valid URL').required('Image URL is required'),
+  price: Yup.number().positive('Price shall be positive number').required('Price is required'),
+  brand: Yup.string().required('Brand name is required').min(1, 'Minimum 1 character'),
+});
+
+const initialValues = {
+  title: '',
+  description: '',
+  thumbnail: '',
+  price: '',
+  brand: '',
+};
 
 export const CreateProductPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
-  const validationSchema = Yup.object({
-    title: Yup.string().required('Title is required').min(3, 'Minimum 3 characters'),
-    description: Yup.string().required('Description is required').min(10, 'Minimum 10 characters'),
-    thumbnail: Yup.string().url('Enter a valid URL').required('Required'),
-    price: Yup.number().positive('Price shall be positive number').required('Required'),
-    brand: Yup.string().required('Required').min(1, 'Minimum 1 character'),
-  });
+  const [successMessage, setSuccessMessage] = useState('');
 
   return (
-    <Box
-      maxWidth='500px'
-      mx='auto'
-      mt={5}
-      p={3}
-      borderRadius={2}
-      boxShadow={3}
-    >
-      <Typography
-        variant='h4'
-        mb={3}
-        textAlign='center'
-      >
-        Add New Product
-      </Typography>
+    <FormWrapper>
+      <FormTitle>Add New Product</FormTitle>
 
       <Formik
-        initialValues={{
-          title: '',
-          description: '',
-          thumbnail: '',
-          price: 0,
-          brand: '',
-        }}
+        initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { resetForm }) => {
-          dispatch(addProduct(values));
+          dispatch(addProduct({ ...values, price: Number(values.price) }));
+
           resetForm();
-          navigate('/products');
+          setSuccessMessage('✅ Product added successfully!');
+
+          setTimeout(() => {
+            setSuccessMessage('');
+            navigate('/products');
+          }, 2000);
         }}
       >
-        {({ errors, touched, isSubmitting, handleChange, values }) => (
-          <Form>
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label='Title'
+        {({ isSubmitting }) => (
+          <FormContainer>
+            <FormFieldBox>
+              <FormField
+                id='title'
                 name='title'
-                value={values.title}
-                onChange={handleChange}
-                error={touched.title && Boolean(errors.title)}
-                helperText={touched.title && errors.title}
+                type='text'
+                placeholder=' '
               />
-            </Box>
+              <FormLabel htmlFor='title'>Title</FormLabel>
+              <FormErrorMessage
+                name='title'
+                component='div'
+              />
+            </FormFieldBox>
 
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label='Description'
+            <FormFieldBox>
+              <FormField
+                component='textarea'
+                id='description'
                 name='description'
-                value={values.description}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                error={touched.description && Boolean(errors.description)}
-                helperText={touched.description && errors.description}
+                placeholder=' '
               />
-            </Box>
+              <FormLabel htmlFor='description'>Description</FormLabel>
+              <FormErrorMessage
+                name='description'
+                component='div'
+              />
+            </FormFieldBox>
 
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label='Image URL'
+            <FormFieldBox>
+              <FormField
+                id='thumbnail'
                 name='thumbnail'
-                value={values.thumbnail}
-                onChange={handleChange}
-                error={touched.thumbnail && Boolean(errors.thumbnail)}
-                helperText={touched.thumbnail && errors.thumbnail}
+                type='text'
+                placeholder=' '
               />
-            </Box>
+              <FormErrorMessage
+                name='thumbnail'
+                component='div'
+              />
+              <FormLabel htmlFor='thumbnail'>Image URL</FormLabel>
+            </FormFieldBox>
 
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label='Price'
+            <FormFieldBox>
+              <FormField
+                id='price'
                 name='price'
-                value={values.price}
-                onChange={handleChange}
-                error={touched.price && Boolean(errors.price)}
-                helperText={touched.price && errors.price}
+                type='number'
+                placeholder=' '
               />
-            </Box>
+              <FormLabel htmlFor='price'>Price</FormLabel>
+              <FormErrorMessage
+                name='price'
+                component='div'
+              />
+            </FormFieldBox>
 
-            <Box mb={2}>
-              <TextField
-                fullWidth
-                label='Brand'
+            <FormFieldBox>
+              <FormField
+                id='brand'
                 name='brand'
-                value={values.brand}
-                onChange={handleChange}
-                error={touched.brand && Boolean(errors.brand)}
-                helperText={touched.brand && errors.brand}
+                type='text'
+                placeholder=' '
               />
-            </Box>
+              <FormErrorMessage
+                name='brand'
+                component='div'
+              />
+              <FormLabel htmlFor='brand'>Brand</FormLabel>
+            </FormFieldBox>
 
-            <Button
+            <FormButton
               type='submit'
-              variant='contained'
-              color='secondary'
-              fullWidth
               disabled={isSubmitting}
             >
               Add Product
-            </Button>
-          </Form>
+            </FormButton>
+
+            {successMessage && <FormSuccessMessage>{successMessage}</FormSuccessMessage>}
+          </FormContainer>
         )}
       </Formik>
-    </Box>
+    </FormWrapper>
   );
 };
