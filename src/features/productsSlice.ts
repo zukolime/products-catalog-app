@@ -66,7 +66,13 @@ const productsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.products = action.payload;
+        if (state.products.length === 0) {
+          state.products = action.payload;
+        } else {
+          const existingIds = new Set(state.products.map((product) => product.id));
+          const newProducts = action.payload.filter((product: Product) => !existingIds.has(product.id));
+          state.products = [...state.products, ...newProducts];
+        }
         state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {

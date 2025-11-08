@@ -8,7 +8,7 @@ import { NotFound } from '../NotFound/NotFound';
 export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { loading, products } = useSelector((state: RootState) => state.products);
-  const product = products.find((p) => String(p.id) === id);
+  const product = products.find((product) => String(product.id) === id);
 
   if (loading) return <p>Loading...</p>;
 
