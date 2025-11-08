@@ -6,15 +6,15 @@ import { useEffect } from 'react';
 
 import type { Product } from '../../models/product';
 import type { AppDispatch, RootState } from '../../app/providers/with-store';
+import { ProductFilters } from '../ProductFilters/ProductFilters';
 
 export const CardList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const products = useSelector((state: RootState) => state.products.products);
-  const loading = useSelector((state: RootState) => state.products.loading);
-  const error = useSelector((state: RootState) => state.products.error);
+  const { products, loading, error } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -26,13 +26,16 @@ export const CardList = () => {
   }
 
   return (
-    <CardListWrapper>
-      {products.map((product: Product) => (
-        <CardItem
-          key={product.id}
-          product={product}
-        />
-      ))}
-    </CardListWrapper>
+    <>
+      <ProductFilters />
+      <CardListWrapper>
+        {products.map((product: Product) => (
+          <CardItem
+            key={product.id}
+            product={product}
+          />
+        ))}
+      </CardListWrapper>
+    </>
   );
 };

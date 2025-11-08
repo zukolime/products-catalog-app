@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Formik } from 'formik';
+import { Formik, type FormikHelpers } from 'formik';
 
 import { validationSchema } from '../../helpers/validation';
 import { addProduct } from '../../features/productsSlice';
@@ -18,6 +18,14 @@ import {
   FormContainer,
 } from './CreateProductPage.styled';
 
+interface ProductFormValues {
+  title: string;
+  description: string;
+  thumbnail: string;
+  price: string;
+  brand: string;
+}
+
 const initialValues = {
   title: '',
   description: '',
@@ -31,24 +39,25 @@ export const CreateProductPage = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState('');
 
+  const onSubmitForm = (values: ProductFormValues, { resetForm }: FormikHelpers<ProductFormValues>) => {
+    dispatch(addProduct({ ...values, price: Number(values.price) }));
+
+    resetForm();
+    setSuccessMessage('✅ Product added successfully!');
+
+    setTimeout(() => {
+      setSuccessMessage('');
+      navigate('/products');
+    }, 2000);
+  };
+
   return (
     <FormWrapper>
       <FormTitle>Add New Product</FormTitle>
-
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(addProduct({ ...values, price: Number(values.price) }));
-
-          resetForm();
-          setSuccessMessage('✅ Product added successfully!');
-
-          setTimeout(() => {
-            setSuccessMessage('');
-            navigate('/products');
-          }, 2000);
-        }}
+        onSubmit={onSubmitForm}
       >
         {({ isSubmitting }) => (
           <FormContainer>

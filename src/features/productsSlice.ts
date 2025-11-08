@@ -3,7 +3,7 @@ import type { Product } from '../models/product';
 import { getHttp } from '../helpers/getHttp';
 import { v4 as uuid } from 'uuid';
 
-interface ProductsState {
+export interface ProductsState {
   products: Product[];
   filter: 'all' | 'liked';
   loading: boolean;
