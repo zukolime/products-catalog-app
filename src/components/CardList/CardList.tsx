@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import type { Product } from '../../models/product';
 import type { AppDispatch, RootState } from '../../app/providers/with-store';
 import { ProductFilters } from '../ProductFilters/ProductFilters';
+import { Spinner } from '../Spinner/Spinner';
+import { ErrorMsg } from '../ErrorMsg/ErrorMsg';
 
 export const CardList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,14 +19,14 @@ export const CardList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredProducts = filter === 'liked' ? products.filter((p) => p.liked) : products;
+  const filteredProducts = filter === 'liked' ? products.filter((product) => product.liked) : products;
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Spinner></Spinner>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <ErrorMsg></ErrorMsg>;
   }
 
   return (

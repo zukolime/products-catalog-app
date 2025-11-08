@@ -2,15 +2,20 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import type { RootState } from '../../app/providers/with-store';
 
-import { ProductStyles as S } from './ProductDetailsPage.styled';
 import { NotFound } from '../NotFound/NotFound';
+import { ErrorMsg } from '../../components/ErrorMsg/ErrorMsg';
+import { Spinner } from '../../components/Spinner/Spinner';
+
+import { ProductStyles as S } from './ProductDetailsPage.styled';
 
 export const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const { loading, products } = useSelector((state: RootState) => state.products);
+  const { products, loading, error } = useSelector((state: RootState) => state.products);
   const product = products.find((product) => String(product.id) === id);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Spinner />;
+
+  if (error) return <ErrorMsg />;
 
   if (!product) {
     return <NotFound></NotFound>;
