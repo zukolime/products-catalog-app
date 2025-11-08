@@ -10,12 +10,14 @@ import { ProductFilters } from '../ProductFilters/ProductFilters';
 
 export const CardList = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, loading, error } = useSelector((state: RootState) => state.products);
+  const { products, filter, loading, error } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const filteredProducts = filter === 'liked' ? products.filter((p) => p.liked) : products;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -29,7 +31,7 @@ export const CardList = () => {
     <>
       <ProductFilters />
       <CardListWrapper>
-        {products.map((product: Product) => (
+        {filteredProducts.map((product: Product) => (
           <CardItem
             key={product.id}
             product={product}
