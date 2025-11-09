@@ -3,7 +3,7 @@ import { HeaderLinkWrapper, HeaderNavLink, HeaderTitle, HeaderWrapper } from './
 export const Header = () => {
   return (
     <HeaderWrapper>
-      <HeaderTitle to='/products'>My Products App</HeaderTitle>
+      <HeaderTitle to='/'>My Products App</HeaderTitle>
       <HeaderLinkWrapper>
         <HeaderNavLink to='/products'>Products</HeaderNavLink>
         <HeaderNavLink to='/create-product'>Create Product</HeaderNavLink>

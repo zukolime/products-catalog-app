@@ -5,6 +5,7 @@ import { NotFound } from '../../pages/NotFound/NotFound';
 import { CreateProductPage } from '../../pages/CreateProductPage/CreateProductPage';
 import { ProductDetailsPage } from '../../pages/ProductDetailsPage/ProductDetailsPage';
 import { ProductsPage } from '../../pages/ProductsPage/ProductsPage';
+import { HeroPage } from '../../pages/HeroPage/HeroPage';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFound />,
     children: [
+      {
+        path: '/',
+        element: <HeroPage />,
+      },
       {
         path: '/products',
         element: <ProductsPage />,
