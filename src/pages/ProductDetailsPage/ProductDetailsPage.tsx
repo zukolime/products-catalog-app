@@ -18,7 +18,7 @@ export const ProductDetailsPage = () => {
   if (error) return <ErrorMsg />;
 
   if (!product) {
-    return <NotFound></NotFound>;
+    return <NotFound />;
   }
 
   return (
