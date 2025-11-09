@@ -7,3 +7,7 @@ export interface Product {
   brand: string;
   liked: boolean;
 }
+
+export type ProductFormValues = Omit<Product, 'id' | 'liked' | 'price'> & {
+  price: string;
+};

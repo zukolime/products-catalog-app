@@ -1,32 +1,14 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Formik, type FormikHelpers } from 'formik';
 
 import { validationSchema } from '../../helpers/validation';
-import { addProduct } from '../../features/productsSlice';
-import type { AppDispatch } from '../../app/providers/with-store';
-import {
-  FormWrapper,
-  FormTitle,
-  FormFieldBox,
-  FormLabel,
-  FormButton,
-  FormErrorMessage,
-  FormSuccessMessage,
-  FormField,
-  FormContainer,
-} from './CreateProductPage.styled';
+import { ProductFormField } from '../../components/ProductFormField/ProductFormField';
+import type { ProductFormValues } from '../../models/product';
+import { formFields } from './formConfig';
 
-interface ProductFormValues {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: string;
-  brand: string;
-}
+import { FormWrapper, FormTitle, FormButton, FormSuccessMessage, FormContainer } from './CreateProductPage.styled';
+import { useProductForm } from '../../hooks/useProductForm';
 
-const initialValues = {
+const initialValues: ProductFormValues = {
   title: '',
   description: '',
   thumbnail: '',
@@ -35,20 +17,10 @@ const initialValues = {
 };
 
 export const CreateProductPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const [successMessage, setSuccessMessage] = useState('');
+  const { handleSubmit, successMessage } = useProductForm();
 
   const onSubmitForm = (values: ProductFormValues, { resetForm }: FormikHelpers<ProductFormValues>) => {
-    dispatch(addProduct({ ...values, price: Number(values.price) }));
-
-    resetForm();
-    setSuccessMessage('✅ Product added successfully!');
-
-    setTimeout(() => {
-      setSuccessMessage('');
-      navigate('/products');
-    }, 2000);
+    handleSubmit(values, resetForm);
   };
 
   return (
@@ -61,83 +33,20 @@ export const CreateProductPage = () => {
       >
         {({ isSubmitting }) => (
           <FormContainer>
-            <FormFieldBox>
-              <FormField
-                id='title'
-                name='title'
-                type='text'
-                placeholder=' '
+            {formFields.map(({ name, label, type }) => (
+              <ProductFormField
+                key={name}
+                name={name}
+                label={label}
+                type={type}
               />
-              <FormLabel htmlFor='title'>Title</FormLabel>
-              <FormErrorMessage
-                name='title'
-                component='div'
-              />
-            </FormFieldBox>
-
-            <FormFieldBox>
-              <FormField
-                component='textarea'
-                id='description'
-                name='description'
-                placeholder=' '
-              />
-              <FormLabel htmlFor='description'>Description</FormLabel>
-              <FormErrorMessage
-                name='description'
-                component='div'
-              />
-            </FormFieldBox>
-
-            <FormFieldBox>
-              <FormField
-                id='thumbnail'
-                name='thumbnail'
-                type='text'
-                placeholder=' '
-              />
-              <FormErrorMessage
-                name='thumbnail'
-                component='div'
-              />
-              <FormLabel htmlFor='thumbnail'>Image URL</FormLabel>
-            </FormFieldBox>
-
-            <FormFieldBox>
-              <FormField
-                id='price'
-                name='price'
-                type='number'
-                placeholder=' '
-              />
-              <FormLabel htmlFor='price'>Price</FormLabel>
-              <FormErrorMessage
-                name='price'
-                component='div'
-              />
-            </FormFieldBox>
-
-            <FormFieldBox>
-              <FormField
-                id='brand'
-                name='brand'
-                type='text'
-                placeholder=' '
-              />
-              <FormErrorMessage
-                name='brand'
-                component='div'
-              />
-              <FormLabel htmlFor='brand'>Brand</FormLabel>
-            </FormFieldBox>
-
+            ))}
             <FormButton
               type='submit'
               disabled={isSubmitting}
             >
               Add Product
             </FormButton>
-
             {successMessage && <FormSuccessMessage>{successMessage}</FormSuccessMessage>}
           </FormContainer>
         )}

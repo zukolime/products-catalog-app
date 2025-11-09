@@ -1,4 +1,4 @@
-export const getHttp = () => {
+export const apiRequest = () => {
   const request = async (url: string, method = 'GET', body = null, headers = { 'Content-Type': 'application/json' }) => {
     try {
       const response = await fetch(url, { method, body, headers });

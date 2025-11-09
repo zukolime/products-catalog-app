@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Product } from '../models/product';
-import { getHttp } from '../helpers/getHttp';
 import { v4 as uuid } from 'uuid';
+
+import type { Product, ProductFormValues } from '../models/product';
+import { apiRequest } from '../helpers/apiRequest';
+import { mergeProducts } from '../helpers/mergeProducts';
 
 export interface ProductsState {
   products: Product[];
@@ -10,13 +12,7 @@ export interface ProductsState {
   error: string | null;
 }
 
-interface NewProductPayload {
-  title: string;
-  description: string;
-  thumbnail: string;
-  price: number;
-  brand: string;
-}
+type AddProductPayload = Omit<ProductFormValues, 'price'> & { price: number };
 
 const initialState: ProductsState = {
   products: [],
@@ -26,7 +22,7 @@ const initialState: ProductsState = {
 };
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-  const { request } = getHttp();
+  const { request } = apiRequest();
   const data = await request('https://dummyjson.com/products?limit=6');
   return data.products;
 });
@@ -42,14 +38,10 @@ const productsSlice = createSlice({
     removeProduct(state, action: PayloadAction<string>) {
       state.products = state.products.filter((item) => item.id !== action.payload);
     },
-    addProduct(state, action: PayloadAction<NewProductPayload>) {
+    addProduct(state, action: PayloadAction<AddProductPayload>) {
       const newProduct: Product = {
         id: uuid(),
-        title: action.payload.title,
-        description: action.payload.description,
-        thumbnail: action.payload.thumbnail,
-        price: action.payload.price,
-        brand: action.payload.brand,
+        ...action.payload,
         liked: false,
       };
 
@@ -66,13 +58,7 @@ const productsSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        if (state.products.length === 0) {
-          state.products = action.payload;
-        } else {
-          const existingIds = new Set(state.products.map((product) => product.id));
-          const newProducts = action.payload.filter((product: Product) => !existingIds.has(product.id));
-          state.products = [...state.products, ...newProducts];
-        }
+        state.products = mergeProducts(state.products, action.payload);
         state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
