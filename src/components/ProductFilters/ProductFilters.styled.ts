@@ -4,7 +4,7 @@ export const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px 0;
+  margin: 16px 0;
   gap: 8px;
 `;
 export const FilterBtn = styled.button<{ $active: boolean }>`

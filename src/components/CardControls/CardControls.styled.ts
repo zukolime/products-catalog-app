@@ -12,4 +12,11 @@ export const CardControl = styled.button`
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #ff3864;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 85, 114, 0.3);
+  }
 `;

@@ -19,7 +19,7 @@ export const CardList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filteredProducts = filter === 'liked' ? products.filter((product) => product.liked) : products;
+  const filteredProducts = filter === 'liked' ? products.filter((product: Product) => product.liked) : products;
 
   if (loading) {
     return <Spinner></Spinner>;

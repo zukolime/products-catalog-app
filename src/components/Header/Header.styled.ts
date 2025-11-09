@@ -5,25 +5,27 @@ export const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px;
+  padding: 16px;
   background: #ffffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
 `;
 
 export const HeaderTitle = styled(Link)`
-  font-size: 32px;
+  flex-shrink: 0;
+  font-size: clamp(18px, 4vw, 34px);
   font-weight: 600;
 `;
 
 export const HeaderLinkWrapper = styled.nav`
   display: flex;
+  justify-content: flex-end;
   flex-wrap: wrap;
-  gap: clamp(0.625rem, 0.125rem + 2.5vw, 3.125rem);
+  gap: clamp(20px, 1vw, 50px);
 `;
 
 export const HeaderNavLink = styled(NavLink)`
-  font-size: 18px;
+  font-size: clamp(14px, 2vw, 18px);
   font-weight: 500;
   position: relative;
 

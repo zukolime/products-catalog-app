@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const CardWrapper = styled.li`
-  padding: 15px;
+  padding: 16px;
   border-radius: 4px;
   box-shadow: 0 0 12px 1px rgba(237, 237, 237, 2.1);
   transition: box-shadow 0.3s;

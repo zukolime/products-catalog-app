@@ -6,7 +6,7 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 70%;
-  margin: 15px auto;
+  margin: 16px auto;
 `;
 
 export const FormContainer = styled(Form)`
@@ -16,7 +16,9 @@ export const FormContainer = styled(Form)`
   gap: 16px;
 `;
 
-export const FormTitle = styled.h2``;
+export const FormTitle = styled.h2`
+  font-size: clamp(24px, 4vw, 32px);
+`;
 
 export const FormFieldBox = styled.div`
   position: relative;
@@ -29,7 +31,7 @@ export const FormLabel = styled.label`
   position: absolute;
   left: 0;
   top: 0;
-  font-size: 15px;
+  font-size: 16px;
   color: #777;
   background: #fff;
   padding: 0 4px;

@@ -4,8 +4,8 @@ export const ErrorMsgContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 15px auto;
-  height: 100vh;
+  margin: 16px auto;
+  height: 80vh;
 `;
 
 export const ErrorMsgText = styled.span`

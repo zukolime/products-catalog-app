@@ -7,7 +7,8 @@ export const HeroWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin: 15px auto;
+  margin: 16px auto;
+  padding: 15px;
   height: 80vh;
   box-shadow: 0 0 20px 2px rgba(255, 85, 114, 0.2);
   border-radius: 16px;
@@ -22,6 +23,7 @@ export const HeroTitle = styled.h2`
 
 export const HeroText = styled.p`
   font-size: 24px;
+  text-align: center;
   margin: 0;
   color: #333;
 `;

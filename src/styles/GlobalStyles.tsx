@@ -30,11 +30,12 @@ export const GlobalStyle = createGlobalStyle`
     display: block;
     width: 100%;
   }
+    
 `;
 
 export const MainContainer = styled.div`
   width: 70%;
-  margin: 15px auto;
+  margin: 16px auto;
 
   @media (max-width: 660px) {
     width: 90%;
