@@ -1,6 +1,7 @@
 {
   "name": "salfa-task-app",
   "private": true,
+  "homepage": "https://zukolime.github.io/app",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
