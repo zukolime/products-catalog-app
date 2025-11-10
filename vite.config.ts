@@ -10,5 +10,5 @@ export default defineConfig({
       },
     }),
   ],
-  base: '/app/',
+  base: '/products-catalog-app/',
 });
